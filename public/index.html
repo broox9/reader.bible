@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bible Reader</title>
+
+    <script type="text/javascript" src="lib/underscore/underscore.js"></script>
+    <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
+
+    <script type="text/javascript" src="lib/backbone/backbone.js"></script>
+    <script type="text/javascript" src="lib/backbone.babysitter/lib/backbone.babysitter.min.js"></script>
+    <script type="text/javascript" src="lib/backbone.wreqr/lib/backbone.wreqr.min.js"></script>
+    <script type="text/javascript" src="lib/backbone.marionette/lib/backbone.marionette.min.js"></script>
+
+    <script type="text/javascript" src="lib/handlebars/handlebars.min.js"></script>
+
+    <script type="text/javascript" src="js/app/reader.js"></script>
+    <script type="text/javascript" src="js/app/entities/bible_entities.js"></script>
+    <script type="text/javascript" src="js/app/select_module/select_controller.js"></script>
+    <script type="text/javascript" src="js/app/select_module/select_view.js"></script>
+
+    <script type="text/javascript" src="js/app/read_module/read_controller.js"></script>
+    <script type="text/javascript" src="js/app/read_module/read_view.js"></script>
+
+    <!-- script type="text/javascript" src="js/app/master.min.js"></script -->
+</head>
+<body>
+    <div id="app-container">
+        <div id="selector-region"></div>
+        <div id="reader-region"></div>
+    </div>
+</body>
+</html>
+
+<script type="text/x-handlebars-template" id="select_template">
+  <select name="book-selector" id="book-selector">
+    <option value="">Book</option>
+  </select>
+
+  <select name="chapter-selector" id="chapter-selector">
+    <option value="">Chapter</option>
+  </select>
+
+  <select name="verse-selector" id="verse-selector">
+    <option value="">Verse</option>
+  </select>
+</script>
+
+<script type="text/x-handlebars-template" id="select_item_template">
+  <option value="{{formatNumber b}}">{{n}}</option>
+</script>
