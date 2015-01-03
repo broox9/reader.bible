@@ -11,12 +11,29 @@ Reader.module('SelectModule', function (SelectModule, App, Backbone, Marionette,
     return "00"+num;
   }
 
-  SelectModule.SelectItemView = Backbone.Marionette.ItemView.extend({
+  function arrayIndexAdjust (idx) {
+    return idx + 1;
+  }
+
+  SelectModule.LayoutView = Backbone.Marionette.LayoutView.extend({
+    id: "select-section",
+    template: "#select_layout_template",
+
+    regions: {
+      book: '#book-select-region',
+      chapter: '#chapter-select-region',
+      verse: '#verse-select-region'
+    }
+  });
+
+
+  /* = #### INDIVIDUAL MODEL VIEWS ############################################ */
+  SelectModule.SelectBookItemView = Backbone.Marionette.ItemView.extend({
     tagName: "option",
 
     template: function (serializedModel) {
       Handlebars.registerHelper('formatNumber', formatNumber);
-      var text = $('#select_item_template').text();
+      var text = $('#select_book_item_template').text();
       var template = Handlebars.compile(text);
       return template(serializedModel);
 
@@ -30,41 +47,102 @@ Reader.module('SelectModule', function (SelectModule, App, Backbone, Marionette,
       // nesting elements during re-render.
       this.$el.unwrap();
       this.setElement(this.$el);
-    },
+    }
   });
 
 
-  SelectModule.SelectView = Backbone.Marionette.CompositeView.extend({
-    className: 'scripture-select',
-    //model: App.Entities.Book,
-    childView: SelectModule.SelectItemView,
-    childViewContainer: '#book-selector',
+
+  SelectModule.SelectChapterItemView = Backbone.Marionette.ItemView.extend({
+    tagName: "option",
+    template: '#select_chapter_item_template'
+  });
 
 
-    events: {
-      'change #book-selector': 'handleBookSelection'
-    },
+
+  /* = #### COLLECITON/COMPOSITE VIEWS ############################################ */
+  SelectModule.SelectBookView = Backbone.Marionette.CollectionView.extend({
+    tagName: 'select',
+    childView: SelectModule.SelectBookItemView,
 
     initialize: function (options) {
-      this.collection = options.collection;
+      this.$el.attr('id', 'book-selector')
     },
 
-    template: function (serializedModel) {
-        var text = $('#select_template').text();
-        var template = Handlebars.compile(text);
-        return template(serializedModel);
+    delegateEvents: function () {
+      var self = this;
+
+      this.$el.on('change', function (e) {
+        self.handleBookSelection(e);
+      })
+
+      return this;
     },
 
     handleBookSelection: function (e) {
       //make this an app wide controller event
-      console.log("Selected", e.target.value);
-      var url = App.constants.getAPIbase() + '/api/book/' + e.target.value;
-      $.get(url, function (data) {
-        console.log("BOOK DATA", data);
-      });
+      var book = App.request('selection:book', e.target.value);
+      App.current.bookID = parseInt(e.target.value, 10);
+      App.current.bookName = e.target[e.target.selectedIndex].innerHTML
+      App.vent.trigger("set:book")
     }
   });
 
+
+
+  SelectModule.SelectChapterView = Backbone.Marionette.ItemView.extend({
+    tagName: 'select',
+    //className: 'scripture-select',
+    name: 'chapter',
+
+    templateHelpers: function () {
+      return {
+        chaps: _.keys(this.options.grouped),
+        name: this.options.name
+      }
+    },
+
+    template: function (groupedData) {
+      Handlebars.registerHelper("formatNumber", formatNumber);
+      Handlebars.registerHelper('arrayIndexAdjust', arrayIndexAdjust);
+      var html = $('#select_chapter_template').text();
+      var template = Handlebars.compile(html)
+      return template(groupedData);
+    },
+
+    delegateEvents: function () {
+      var self = this;
+
+      this.$el.on('change', function (e) {
+        self.handleChapterSelection(e);
+      })
+
+      return this;
+    },
+
+    handleChapterSelection: function (e) {
+      App.current.chapterID = parseInt(e.target.value, 10);
+      App.vent.trigger('set:chapter');
+    }
+  });
+
+
+
+  SelectModule.SelectVerseView = Backbone.Marionette.ItemView.extend({
+    tagName: 'select',
+    //className: 'scripture-select',
+    //model: App.Entities.Book,
+    childView: SelectModule.SelectChapterItemView,
+
+    initialize: function (options) {},
+
+    templateHelpers: function () {},
+
+    template: function (serializedModel) {},
+
+    delegateEvents: function () {},
+
+    handleSelection: function (e) {}
+  });
 
 
 });

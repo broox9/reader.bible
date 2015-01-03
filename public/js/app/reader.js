@@ -8,13 +8,27 @@
     }
   }
 
+
   App.addRegions({
-    App: "#reader-region",
+    reader: "#reader-region",
     selector: "#selector-region"
   });
 
   App.on('before:start', function () {
     App.module('Entities').start();
+
+    //stored upon selection/navigation
+    App.current  = {
+      book: "",
+      chapter: "",
+      verse: "",
+      bookID: "",
+      chapterID: "",
+      verseID: '',
+      bookName: ''
+    };
+
+    App.bookKey = {};
   });
 
   App.on('start', function () {
@@ -34,5 +48,4 @@
 
 $(function() {
   Reader.start();
-  console.log("started Reader App boy")
 });

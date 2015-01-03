@@ -31,20 +31,35 @@
 </body>
 </html>
 
-<script type="text/x-handlebars-template" id="select_template">
-  <select name="book-selector" id="book-selector">
-    <option value="">Book</option>
-  </select>
+<script type="text/x-handlebars-template" id="select_layout_template">
+  <section id="book-select-region"></section>
+  <section id="chapter-select-region"></section>
+  <section id="verse-select-region"></section>
+</script>
 
-  <select name="chapter-selector" id="chapter-selector">
-    <option value="">Chapter</option>
-  </select>
 
-  <select name="verse-selector" id="verse-selector">
-    <option value="">Verse</option>
+<script type="text/x-handlebars-template" id="select_chapter_template">
+  <select id="chapter-selector">
+    <option value="">select {{name}}</option>
+    {{#each chaps}}
+      <option value="{{formatNumber (arrayIndexAdjust @index)}}">{{arrayIndexAdjust @index}}</option>
+    {{/each}}
   </select>
 </script>
 
-<script type="text/x-handlebars-template" id="select_item_template">
+
+<script type="text/x-handlebars-template" id="select_book_item_template">
   <option value="{{formatNumber b}}">{{n}}</option>
+</script>
+
+
+
+<script type="text/x-handlebars-template" id="read_chapter_item_template">
+  <h3>{{bookName}} Chapter {{chapter}}</h3>
+  {{#each verses}}
+  <div class="verse">
+    <span class="verse-number">{{this.get 'v' }}</span>
+    <span class="verse-text">{{this.get 't'}}</span>
+  </div>
+  {{/each}}
 </script>
