@@ -1,0 +1,25 @@
+#verse-box {
+  padding: 1em;
+}
+
+#verse-box .verse {
+  margin: 0.75em 0;
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+
+#verse-box .verse .verse-number {
+  display: table-cell;
+  width: 1.5em;
+  font-size: small;
+  margin: 0 0 0 0.25em;
+  vertical-align: baseline;
+}
+
+#verse-box .verse .verse-text {
+  display: table-cell
+  font-size: large;
+  line-height: 1.5em;
+
+}

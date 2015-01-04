@@ -1,0 +1,9 @@
+#select-section {
+  width: 100%;
+  background-color: gray;
+}
+
+#select-section section {
+  display: inline-block;
+  padding: 1em;
+}
