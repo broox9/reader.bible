@@ -60,12 +60,16 @@ Reader.module('SelectModule', function (SelectModule, App, Backbone, Marionette,
 
 
   /* = #### COLLECITON/COMPOSITE VIEWS ############################################ */
-  SelectModule.SelectBookView = Backbone.Marionette.CollectionView.extend({
+  SelectModule.SelectBookView = Backbone.Marionette.CompositeView.extend({
     tagName: 'select',
     childView: SelectModule.SelectBookItemView,
 
-    initialize: function (options) {
-      this.$el.attr('id', 'book-selector')
+    initialize: function (options) {},
+
+    template: function (bookModel) {
+      var html = $('#select_book_template').html();
+      var template = Handlebars.compile(html)
+      return template(bookModel)
     },
 
     delegateEvents: function () {
@@ -91,7 +95,6 @@ Reader.module('SelectModule', function (SelectModule, App, Backbone, Marionette,
 
   SelectModule.SelectChapterView = Backbone.Marionette.ItemView.extend({
     tagName: 'select',
-    //className: 'scripture-select',
     name: 'chapter',
 
     templateHelpers: function () {
