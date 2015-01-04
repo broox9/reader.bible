@@ -8,6 +8,7 @@ Reader.module('ReadModule', function (ReadModule, App, Backbone, Marionette, $, 
     },
 
     displayCurrentChapter: function () {
+      console.log("Current Chapter", App.current.chapter.length)
       var verses = App.current.chapter.at(0).get(App.current.chapterID);
       var view = new ReadModule.ChapterView({verses: verses, chapter: App.current.chapterID, bookName: App.current.bookName});
       App.reader.show(view);

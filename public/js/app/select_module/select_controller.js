@@ -7,7 +7,7 @@ Reader.module('SelectModule', function (SelectModule, App, Backbone, Marionette,
         SelectModule.Layout.render();
         App.selector.show(SelectModule.Layout);
 
-        //this.setBookChapterView();
+        this.setBookChapterView({collection: new App.Entities.Chapter});
         //this.setBookVerseView();
         this.setBookKeyView();
       },
@@ -62,7 +62,6 @@ Reader.module('SelectModule', function (SelectModule, App, Backbone, Marionette,
       },
 
       fetchBookData: function (book_id) {
-        console.log("'bout to fetch this book %s'", book_id)
         var url = App.constants.getAPIbase() + '/api/book/' + book_id;
 
         $.get(url).done(function (bookData) {
@@ -71,7 +70,6 @@ Reader.module('SelectModule', function (SelectModule, App, Backbone, Marionette,
       },
 
       bookIsGo: function (bookData) {
-        console.log("Book Is GO!!!", bookData.length);
         var book = new App.Entities.Book();
         book.reset(bookData);
         App.current.book = book;
@@ -79,7 +77,10 @@ Reader.module('SelectModule', function (SelectModule, App, Backbone, Marionette,
         var chapterData = book.groupBy('c')
         var chapter = new App.Entities.Chapter();
         chapter.reset(chapterData);
+
         App.current.chapter = chapter
+        App.current.chapterID = 1;
+        App.vent.trigger('set:chapter')
 
         this.setBookChapterView({grouped: chapterData, collection: chapter});
         //this.setBookVerseView();

@@ -3,6 +3,12 @@
 <head>
     <title>Bible Reader</title>
 
+    <link type="text/css" rel="stylesheet" href="lib/normalize.css/normalize.css" />
+    <link type="text/css" rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
+    <link type="text/css" rel="stylesheet" href="css/main.css" />
+    <link type="text/css" rel="stylesheet" href="css/selection.css" />
+    <link type="text/css" rel="stylesheet" href="css/verse.css" />
+
     <script type="text/javascript" src="lib/underscore/underscore.js"></script>
     <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
 
@@ -38,12 +44,9 @@
 </script>
 
 
-<script type="text/x-handlebars-template" id="select_chapter_template">
-  <select id="chapter-selector">
-    <option value="">select {{name}}</option>
-    {{#each chaps}}
-      <option value="{{formatNumber (arrayIndexAdjust @index)}}">{{arrayIndexAdjust @index}}</option>
-    {{/each}}
+<script type="text/x-handlebars-template" id="select_book_template">
+  <select id="book-selector">
+    <option value="">Select Book</option>
   </select>
 </script>
 
@@ -53,12 +56,22 @@
 </script>
 
 
+<script type="text/x-handlebars-template" id="select_chapter_template">
+  <select id="chapter-selector">
+    <option value="">Select Chapter</option>
+    {{#each chaps}}
+    <option value="{{formatNumber (arrayIndexAdjust @index)}}">{{arrayIndexAdjust @index}}</option>
+    {{/each}}
+  </select>
+</script>
+
 
 <script type="text/x-handlebars-template" id="read_chapter_item_template">
-  <h3>{{bookName}} Chapter {{chapter}}</h3>
+  <h3>{{bookName}} {{chapter}}</h3>
   {{#each verses}}
   <div class="verse">
-    <span class="verse-number">{{this.get 'v' }}</span>
+
+    <span class="verse-number"><a name="{{this.get 'id'}}">{{this.get 'v' }}</a></span>
     <span class="verse-text">{{this.get 't'}}</span>
   </div>
   {{/each}}

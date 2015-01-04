@@ -83,7 +83,7 @@ Reader.module('SelectModule', function (SelectModule, App, Backbone, Marionette,
       var book = App.request('selection:book', e.target.value);
       App.current.bookID = parseInt(e.target.value, 10);
       App.current.bookName = e.target[e.target.selectedIndex].innerHTML
-      App.vent.trigger("set:book")
+      App.vent.trigger('set:book');
     }
   });
 

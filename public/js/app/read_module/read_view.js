@@ -1,6 +1,7 @@
 Reader.module('ReadModule', function (ReadModule, App, Backbone, Marionette, $, _) {
 
   ReadModule.ChapterView = Backbone.Marionette.ItemView.extend({
+    id: 'verse-box',
     initialize: function (options) {
       this.items = options.items
     },
