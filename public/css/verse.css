@@ -1,5 +1,6 @@
 #verse-box {
   padding: 1em;
+  padding-top: 0.25em;
 }
 
 #verse-box .verse {
@@ -11,9 +12,10 @@
 
 #verse-box .verse .verse-number {
   display: table-cell;
-  width: 1.5em;
   font-size: small;
-  margin: 0 0 0 0.25em;
+  width: 1.5em;
+  margin: 0;
+  padding-right: 0.5em;
   vertical-align: baseline;
 }
 

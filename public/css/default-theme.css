@@ -1,0 +1,14 @@
+#app-container.default-theme {
+  background-color: #FFE0B2;
+  color: #4E342E;
+  font-family: "Georgia", "Helvetica", "Helvetica-Neue", serif;
+}
+
+
+#app-container.default-theme #selector-region {
+  background-color: #4E342E;
+}
+
+#app-container.default-theme .verse-number {
+  color: #b8860b;
+}

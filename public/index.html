@@ -8,6 +8,7 @@
     <link type="text/css" rel="stylesheet" href="css/main.css" />
     <link type="text/css" rel="stylesheet" href="css/selection.css" />
     <link type="text/css" rel="stylesheet" href="css/verse.css" />
+    <link type="text/css" rel="stylesheet" href="css/default-theme.css" />
 
     <script type="text/javascript" src="lib/underscore/underscore.js"></script>
     <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
@@ -30,7 +31,7 @@
     <!-- script type="text/javascript" src="js/app/master.min.js"></script -->
 </head>
 <body>
-    <div id="app-container">
+    <div id="app-container" class="default-theme">
         <div id="selector-region"></div>
         <div id="reader-region"></div>
     </div>
@@ -46,7 +47,7 @@
 
 <script type="text/x-handlebars-template" id="select_book_template">
   <select id="book-selector">
-    <option value="">Select Book</option>
+    <option value="">Book</option>
   </select>
 </script>
 
@@ -58,7 +59,7 @@
 
 <script type="text/x-handlebars-template" id="select_chapter_template">
   <select id="chapter-selector">
-    <option value="">Select Chapter</option>
+    <option value="">Chapter</option>
     {{#each chaps}}
     <option value="{{formatNumber (arrayIndexAdjust @index)}}">{{arrayIndexAdjust @index}}</option>
     {{/each}}

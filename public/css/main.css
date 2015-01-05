@@ -1,5 +1,9 @@
-body, html, #app-container {
+body, html {
   height: 100%;
+  width: 100%;
+}
+
+#app-container {
   width: 100%;
   font-size: medium;
 }
