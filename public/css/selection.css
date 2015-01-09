@@ -4,5 +4,5 @@
 
 #select-section section {
   display: inline-block;
-  padding: 1em;
+  padding: 0.75em 0.5em;
 }

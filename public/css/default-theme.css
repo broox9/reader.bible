@@ -12,3 +12,12 @@
 #app-container.default-theme .verse-number {
   color: #b8860b;
 }
+
+
+#utility-bar {
+  background-color: tan;
+}
+
+#utility-bar button {
+  color: olivedrab;
+}

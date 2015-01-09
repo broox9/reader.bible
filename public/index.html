@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bible Reader</title>
+    <title>MyChurchBible Reader</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width= device-width, initial-scale=1.0, user-scalable=no">
 
     <link type="text/css" rel="stylesheet" href="lib/normalize.css/normalize.css" />
     <link type="text/css" rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" />
@@ -69,12 +73,27 @@
 
 
 <script type="text/x-handlebars-template" id="read_verse_item_template">
-  <h3>{{bookName}} {{chapter}}</h3>
-  {{#each verses}}
-  <div class="verse {{#if (isSelected (this.get 'v')) }} highlight {{/if}}" data-verse-number="{{this.get 'v'}}" data-verse-id="{{this.get 'id'}}">
+  <section id="utility-bar">
+    <div class="utility-left">
+      <h3>{{bookName}} {{chapter}}</h3>
+    </div>
+    <div class="utility-right">
+      <div id="utility-buttons">
+        <button id="share" class="fa fa-share-alt"></button>
+        <button id="clip" class="fa fa-paperclip"></button>
+        <button id="clear" class="fa fa-eraser"></button>
+      </div>
+    </div>
 
-    <span class="verse-number"><a name="{{this.get 'id'}}">{{this.get 'v' }}</a></span>
-    <span class="verse-text">{{this.get 't'}}</span>
-  </div>
-  {{/each}}
+  </section>
+
+  <section id="verse-box">
+    {{#each verses}}
+    <div class="verse {{#if (isSelected (this.get 'v')) }} highlight {{/if}}" data-verse-number="{{this.get 'v'}}" data-verse-id="{{this.get 'id'}}">
+
+      <span class="verse-number"><a name="{{this.get 'id'}}">{{this.get 'v' }}</a></span>
+      <span class="verse-text">{{this.get 't'}}</span>
+    </div>
+    {{/each}}
+  </section>
 </script>

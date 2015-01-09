@@ -1,7 +1,7 @@
 Reader.module('ReadModule', function (ReadModule, App, Backbone, Marionette, $, _) {
 
   ReadModule.ChapterView = Backbone.Marionette.ItemView.extend({
-    id: 'verse-box',
+    id: 'verse-box-container',
 
     events: {
       'click .verse' : 'handleClickVerse'

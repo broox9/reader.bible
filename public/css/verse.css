@@ -1,7 +1,50 @@
+/* = UTILITY BAR */
+#utility-bar {
+  display: table;
+  width: 100%;
+  /*table-layout: fixed;*/
+}
+
+#utility-bar > div {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0;
+}
+
+#utility-bar .utility-left {
+  padding: 0.5em 0 0.5em 0.75em;
+}
+
+#utility-bar .utility-right {
+  text-align: right;
+  padding: 0 0.75em 0 0;
+}
+
+#utility-bar h3 {
+  margin: 0;
+}
+
+
 #verse-box {
   padding: 1em;
   padding-top: 0.25em;
 }
+
+
+/* = UTILITY BUTTONS */
+.utility-right button {
+  /*font-size: 16px;*/
+  padding: 0.25em;
+  background-color: transparent;
+  border: none;
+  font-size: 1.25em;
+  margin: 0 5px;
+  height: 100%;
+  cursor: pointer;
+}
+
+
+/* = VERSE BOX BAR */
 
 #verse-box .verse {
   margin: 0.75em 0;
@@ -27,5 +70,5 @@
 }
 
 #verse-box .verse.highlight .verse-text {
-  background-color: rgba(255,255,0, 0.5);
+  background-color: rgba(255,255,255, 0.5);
 }
