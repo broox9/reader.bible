@@ -1,99 +1,129 @@
 Reader.module('SelectModule', function (SelectModule, App, Backbone, Marionette, $, _) {
   this.startWithParent = false;
 
+  var SelectRouter = Backbone.Marionette.AppRouter.extend({
+    appRoutes: {
+      'read/:book_id(/:chapter)(/:verse)' : 'setBookChapter'
+    }
+  });
+
+
   var API = {
       initialize: function () {
         SelectModule.Layout = new SelectModule.LayoutView;
         SelectModule.Layout.render();
         App.selector.show(SelectModule.Layout);
 
-        this.setBookChapterView({collection: new App.Entities.Chapter});
+        this.setBookListView();
+        this.setChapterView();
         //this.setBookVerseView();
-        this.setBookKeyView();
+
       },
 
-      setBookKeyView: function () {
+      setBookChapter: function (book_id, chapter_id, verse_number) {
         var self = this;
-        var bookKey = this.getBooks(); //returns a promise object
-        var view;
 
-        bookKey.done(function (books) {
-          App.bookKey = books
+        App.current.book_id = book_id;
+        App.current.chapter_id = chapter_id || 1;
+        App.current.verse_number = verse_number || null;
 
-          view = new SelectModule.SelectBookView({collection: books});
-          SelectModule.Layout.book.show(view);
+        //if page was loaded with a book/chapter no this happens
+        if (!App.current.book) {
+          App.current.book = new App.Entities.Book();
+        }
+
+        this.fetchBookData(book_id).done(function (bookData) {
+          var chapterGroup = App.current.book.chapterize()
+          App.current.book_name = App.constants.bible.bookList.get(book_id).get('n')
+          App.current.chapters = chapterGroup;
+
+          var options = {
+            grouped: App.current.chapters,
+            selected: App.current.chapter_id
+          };
+
+          self.setChapterView(options)
+          App.vent.trigger('app:set:scripture');
         });
       },
 
-      setBookChapterView: function (options) {
-        var options = {
-          collection: App.current.chapter,
-          grouped: options.grouped || {}
-        }
+      setBookListView: function () {
+        var view = new SelectModule.SelectBookView({collection: App.constants.bible.bookList, selected: App.current.book_id});
+        SelectModule.Layout.book.show(view);
+      },
+
+      setChapterView: function (options) {
         var view = new SelectModule.SelectChapterView(options);
         SelectModule.Layout.chapter.show(view);
       },
 
-      setBookVerseView: function () {
-        // App.current.book = new App.Entities.Book();
-        var options = {
-          name: 'Verse',
-        }
+      //
+      // setBookVerseView: function () {
+      //   // App.current.book = new App.Entities.Book();
+      //   var options = {
+      //     name: 'Verse',
+      //   }
+      //
+      //   var view = new SelectModule.SelectVerseView(options);
+      //   SelectModule.Layout.chapter.show(view);
+      // },
+      //
+      //
+      handleBookSelection: function (book_id) {
+        App.current.book_id = book_id;
+        var nav_url = '/read/' + book_id + '/1'
 
-        var view = new SelectModule.SelectVerseView(options);
-        SelectModule.Layout.chapter.show(view);
+        SelectModule.router.navigate(nav_url, {trigger: true, replace: true})
+        App.vent.trigger('app:set:scripture');
       },
 
-      getBooks: function () {
-        var self = this;
-        //Request Event will be here at some point
-        var fetchPromise = $.Deferred();
-        var options = {
-          success: function (data) {
-            fetchPromise.resolve(data);
-            return data;
-          }
-        }
+      handleChapterSelection: function (chapter_id) {
+        App.current.chapter_id = chapter_id;
+        var nav_url = '/read/' + App.current.book_id + '/' + chapter_id
 
-        var books = new App.Entities.BookList;
-        books.fetch(options);
+        SelectModule.router.navigate(nav_url, {trigger: true, replace: true})
 
-        return fetchPromise.promise();
       },
 
       fetchBookData: function (book_id) {
-        var url = App.constants.getAPIbase() + '/api/book/' + book_id;
+        var fetchPromise = $.Deferred();
+        var options = {
+          book_id: book_id,
+          success: function (bookData) {
+            fetchPromise.resolve(bookData);
+          }
+        };
 
-        $.get(url).done(function (bookData) {
-          API.bookIsGo(bookData)
-        })
-      },
-
-      bookIsGo: function (bookData) {
-        var book = new App.Entities.Book();
-        book.reset(bookData);
-        App.current.book = book;
-
-        var chapterData = book.groupBy('c')
-        var chapter = new App.Entities.Chapter();
-        chapter.reset(chapterData);
-
-        App.current.chapter = chapter
-        App.current.chapterID = 1;
-        App.vent.trigger('set:chapter')
-
-        this.setBookChapterView({grouped: chapterData, collection: chapter});
-        //this.setBookVerseView();
+        App.current.book.fetchBook(options);
+        return fetchPromise.promise();
       }
   };
 
 
+
+
+
   SelectModule.on('start', function () {
-    API.initialize();
+    this.router = new SelectRouter({
+      controller: API
+    });
+
     console.log("Select Module started")
 
+    /* = Events -------- */
+    App.vent.on({
+      'app:ready': function () {
+        API.initialize();
+      },
 
-    App.reqres.setHandler('selection:book', API.fetchBookData);
+      'selected:book': function (book_id) {
+        API.handleBookSelection(book_id)
+      },
+
+      'selected:chapter': function (chapter_id) {
+        API.handleChapterSelection(chapter_id)
+      }
+    });
 
   })
 });

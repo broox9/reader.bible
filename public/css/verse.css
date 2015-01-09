@@ -23,5 +23,9 @@
   display: table-cell
   font-size: large;
   line-height: 1.5em;
+  cursor: pointer;
+}
 
+#verse-box .verse.highlight .verse-text {
+  background-color: rgba(255,255,0, 0.5);
 }
