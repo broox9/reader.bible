@@ -21,7 +21,8 @@
     <script type="text/javascript" src="lib/handlebars/handlebars.min.js"></script>
 
     <script type="text/javascript" src="js/app/reader.js"></script>
-    <script type="text/javascript" src="js/app/entities/bible_entities.js"></script>
+    <script type="text/javascript" src="js/app/entities/bible_models.js"></script>
+    <script type="text/javascript" src="js/app/entities/bible_collections.js"></script>
     <script type="text/javascript" src="js/app/select_module/select_controller.js"></script>
     <script type="text/javascript" src="js/app/select_module/select_view.js"></script>
 
@@ -67,10 +68,10 @@
 </script>
 
 
-<script type="text/x-handlebars-template" id="read_chapter_item_template">
+<script type="text/x-handlebars-template" id="read_verse_item_template">
   <h3>{{bookName}} {{chapter}}</h3>
   {{#each verses}}
-  <div class="verse">
+  <div class="verse {{#if (isSelected (this.get 'v')) }} highlight {{/if}}" data-verse-number="{{this.get 'v'}}" data-verse-id="{{this.get 'id'}}">
 
     <span class="verse-number"><a name="{{this.get 'id'}}">{{this.get 'v' }}</a></span>
     <span class="verse-text">{{this.get 't'}}</span>

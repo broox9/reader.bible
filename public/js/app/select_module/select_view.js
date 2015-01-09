@@ -82,12 +82,14 @@ Reader.module('SelectModule', function (SelectModule, App, Backbone, Marionette,
       return this;
     },
 
+    onShow: function () {
+      this.el.selectedIndex = this.options.selected;
+    },
+
     handleBookSelection: function (e) {
       //make this an app wide controller event
-      var book = App.request('selection:book', e.target.value);
-      App.current.bookID = parseInt(e.target.value, 10);
-      App.current.bookName = e.target[e.target.selectedIndex].innerHTML
-      App.vent.trigger('set:book');
+      var book_id = parseInt(e.target.value, 10);
+      App.vent.trigger('selected:book', book_id);
     }
   });
 
@@ -122,9 +124,13 @@ Reader.module('SelectModule', function (SelectModule, App, Backbone, Marionette,
       return this;
     },
 
+    onShow: function () {
+      this.el.selectedIndex = this.options.selected;
+    },
+
     handleChapterSelection: function (e) {
-      App.current.chapterID = parseInt(e.target.value, 10);
-      App.vent.trigger('set:chapter');
+      chapter_id = parseInt(e.target.value, 10);
+      App.vent.trigger('selected:chapter', chapter_id);
     }
   });
 
